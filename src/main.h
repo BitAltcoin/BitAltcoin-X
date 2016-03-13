@@ -28,9 +28,9 @@ class CInv;
 class CRequestTracker;
 class CNode;
 
-static const int LAST_POW_BLOCK = 21600; //about 1 month of PoW blocks
+static const int LAST_POW_BLOCK = 2160; //about 3 days of PoW blocks
 
-static const unsigned int MAX_BLOCK_SIZE = 1000000;
+static const unsigned int MAX_BLOCK_SIZE = 256000;
 static const unsigned int MAX_BLOCK_SIZE_GEN = MAX_BLOCK_SIZE/2;
 static const unsigned int MAX_BLOCK_SIGOPS = MAX_BLOCK_SIZE/50;
 static const unsigned int MAX_ORPHAN_TRANSACTIONS = MAX_BLOCK_SIZE/100;
@@ -40,38 +40,38 @@ static const int64_t MIN_TX_FEE_V2 = 0 * COIN;
 static const int64_t MIN_RELAY_TX_FEE = MIN_TX_FEE;
 static const int64_t MIN_RELAY_TX_FEE_V2 = MIN_TX_FEE_V2;
 static const int64_t EXCHANGE_FEE = 0.3 * COIN; // 30% fees for transactions which involve non-standard address type (e.g. exchanges)
-static const int64_t MAX_MONEY = 5000000 * COIN;
+static const int64_t MAX_MONEY = 10000000 * COIN;
 static const int64_t MAX_MINT_PROOF_OF_STAKE_1 = 50 * CENT; // 50% per year
 static const int64_t MAX_MINT_PROOF_OF_STAKE_2 = 35 * CENT; // 35% per year
 static const int MAX_TIME_SINCE_BEST_BLOCK = 10; // how many seconds to wait before sending next PushGetBlocks()
 static const int MODIFIER_INTERVAL_SWITCH = 100;
 
-static const unsigned int BLOCK_SWITCH_TIME = 1435708800; // 07/01/2015 @ 12:00am (UTC)
-static const unsigned int FORK_TIME = 1444752000; // (GMT): Tue, 13 Oct 2015 16:00:00 GMT
-static const unsigned int FORK_TIME_2 = 1446915600; // Sat, 07 Nov 2015 17:00:00 GMT
-static const unsigned int FORK_TIME_3 = 1447278900; // Wednesday, 11 Nov 2015 21:55:00 GMT //keesdewit
-static const unsigned int FORK_TIME_4 = 1448211600; // Sunday, 22 Nov 2015 17:00:00 GMT //keesdewit
-static const unsigned int FORK_TIME_5 = 1450046160; // Sunday, 13 Dec 2015 22:36:00 GMT //keesdewit
+static const unsigned int BLOCK_SWITCH_TIME = 1457889292; // 07/01/2015 @ 12:00am (UTC)
+static const unsigned int FORK_TIME = 1457889292; // (GMT): Tue, 13 Oct 2015 16:00:00 GMT
+static const unsigned int FORK_TIME_2 = 1457889292; // Sat, 07 Nov 2015 17:00:00 GMT
+static const unsigned int FORK_TIME_3 = 1457889292; // Wednesday, 11 Nov 2015 21:55:00 GMT //keesdewit
+static const unsigned int FORK_TIME_4 = 1457889292; // Sunday, 22 Nov 2015 17:00:00 GMT //keesdewit
+static const unsigned int FORK_TIME_5 = 1457889292; // Sunday, 13 Dec 2015 22:36:00 GMT //keesdewit
 static const int FORK_HEIGHT_6 = 40180;
 static const int FORK_HEIGHT_7 = 43000;
 static const int FORK_HEIGHT_8 = 58000; // 39otrebla: changed SuperFly address
 
 /// using these values instead of comparing to pindexBest because if there is a rollback for some unknown reason the new blocks wont be subject
 /// to exemption because they wont be in the time frame, although the scenario just described should never happen
-static const unsigned int Exemption_Start = 1456820338;
-static const unsigned int Exemption_End = 1457483446;
+static const unsigned int Exemption_Start = 1457889292;
+static const unsigned int Exemption_End = 1457889292;
 
-static const int64_t STAKING_FEES = 0.1 * COIN;
-static const int64_t TX_FEES_BURNING_RATE = 0.1 * COIN;
+static const int64_t STAKING_FEES = 0.3 * COIN;
+static const int64_t TX_FEES_BURNING_RATE = 0.5 * COIN;
 static const int64_t STAKING_FEES_BURNING_RATE = 0 * COIN;
 
 inline bool MoneyRange(int64_t nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 // Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp.
-static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
+static const unsigned int LOCKTIME_THRESHOLD = 100000000; // Tue Nov  5 00:53:20 1985 UTC
 /** Combine Threshold Default */   
 static const int64_t DEF_COMBINE_AMOUNT = 1 * COIN; 
 /** Combine Threshold Max */  
-static const int64_t MAX_COMBINE_AMOUNT = 100 * COIN;
+static const int64_t MAX_COMBINE_AMOUNT = 1000 * COIN;
 /** Additional Fee Address **/
 static const std::string ADDITIONAL_FEE_ADDRESS_1 = "FUvpVUAnEf9u4JPmVWymhV5o1BEvMQBcyP"; // SuperFly 1 (disabled since FORK_HEIGHT_9)
 static const std::string ADDITIONAL_FEE_ADDRESS_2 = "FPasC37ir9FNX9KsSLsEDvuZrGnFwYdzGF"; // SuperFly 2 (enabled since FORK_HEIGHT_9)
