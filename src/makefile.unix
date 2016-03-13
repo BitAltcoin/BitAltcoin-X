@@ -156,7 +156,7 @@ OBJS= \
     obj/additionalfee.o \
     obj/messages.o
 
-all: FlyCoind
+all: bitaltcoin-xd
 
 LIBS += $(CURDIR)/leveldb/libleveldb.a $(CURDIR)/leveldb/libmemenv.a
 DEFS += $(addprefix -I,$(CURDIR)/leveldb/include)
@@ -197,11 +197,11 @@ obj/%.o: %.c
 		     -e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
 		  rm -f $(@:%.o=%.d)
 		  
-FlyCoind: $(OBJS:obj/%=obj/%)
+bitaltcoin-xd: $(OBJS:obj/%=obj/%)
 	$(LINK) $(xCXXFLAGS) -o $@ $^ $(xLDFLAGS) $(LIBS)
 
 clean:
-	-rm -f FlyCoind
+	-rm -f bitaltcoin-xd
 	-rm -f obj/*.o
 	-rm -f obj/*.P
 	-rm -f obj-test/*.o
