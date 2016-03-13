@@ -68,7 +68,7 @@ double GetPoWMHashPS()
         pindex = pindex->pnext;
     }
 
-    return GetDifficulty() * 4294.967296 / nTargetSpacingWork;
+    return GetDifficulty() * 294.967296 / nTargetSpacingWork;
 }
 
 double GetPoSKernelPS()
@@ -84,7 +84,7 @@ double GetPoSKernelPS()
     {
         if (pindex->IsProofOfStake())
         {
-            dStakeKernelsTriedAvg += GetDifficulty(pindex) * 4294967296.0;
+            dStakeKernelsTriedAvg += GetDifficulty(pindex) * 294967296.0;
             nStakesTime += pindexPrevStake ? (pindexPrevStake->nTime - pindex->nTime) : 0;
             pindexPrevStake = pindex;
             nStakesHandled++;
