@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2015 The Bitcoin developers
-// Copyright (c) 2015 The FlyCoin developers
+// Copyright (c) 2015 The BitAltcoin-X developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -64,7 +64,7 @@ namespace Checkpoints
         return NULL;
     }
 
-    // FlyCoin: synchronized checkpoint (centrally broadcasted)
+    // BitAltcoin-X: synchronized checkpoint (centrally broadcasted)
     uint256 hashSyncCheckpoint = 0;
     uint256 hashPendingCheckpoint = 0;
     CSyncCheckpoint checkpointMessage;
@@ -72,7 +72,7 @@ namespace Checkpoints
     uint256 hashInvalidCheckpoint = 0;
     CCriticalSection cs_hashSyncCheckpoint;
 
-    // FlyCoin: get last synchronized checkpoint
+    // BitAltcoin-X: get last synchronized checkpoint
     CBlockIndex* GetLastSyncCheckpoint()
     {
         LOCK(cs_hashSyncCheckpoint);
@@ -83,7 +83,7 @@ namespace Checkpoints
         return NULL;
     }
 
-    // FlyCoin: only descendant of current sync-checkpoint is allowed
+    // BitAltcoin-X: only descendant of current sync-checkpoint is allowed
     bool ValidateSyncCheckpoint(uint256 hashCheckpoint)
     {
         if (!mapBlockIndex.count(hashSyncCheckpoint))
@@ -236,7 +236,7 @@ namespace Checkpoints
         return false;
     }
 
-    // FlyCoin: reset synchronized checkpoint to last hardened checkpoint
+    // BitAltcoin-X: reset synchronized checkpoint to last hardened checkpoint
     bool ResetSyncCheckpoint()
     {
         LOCK(cs_hashSyncCheckpoint);
@@ -347,12 +347,12 @@ namespace Checkpoints
     }
 }
 
-// FlyCoin: sync-checkpoint master key
+// BitAltcoin-X: sync-checkpoint master key
 const std::string CSyncCheckpoint::strMasterPubKey = "";
 
 std::string CSyncCheckpoint::strMasterPrivKey = "";
 
-// FlyCoin: verify signature of sync-checkpoint message
+// BitAltcoin-X: verify signature of sync-checkpoint message
 bool CSyncCheckpoint::CheckSignature()
 {
     CKey key;
@@ -367,7 +367,7 @@ bool CSyncCheckpoint::CheckSignature()
     return true;
 }
 
-// FlyCoin: process synchronized checkpoint
+// BitAltcoin-X: process synchronized checkpoint
 bool CSyncCheckpoint::ProcessSyncCheckpoint(CNode* pfrom)
 {
     if (!CheckSignature())
