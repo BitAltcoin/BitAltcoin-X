@@ -2930,9 +2930,9 @@ bool LoadBlockIndex(bool fAllowNew)
         if (!fAllowNew)
             return true;
 
-        const char* pszTimestamp = "BitAltcoin-X, flying high!";
+        const char* pszTimestamp = "PL Times 13/03/2016 Jimmy Deadjim, Astral’s Visionary, Reborn at 23 then Turns X";
         CTransaction txNew;
-        txNew.nTime = 1441657188;
+        txNew.nTime = 1457889292;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
         txNew.vin[0].scriptSig = CScript() << 0 << CBigNum(42) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
@@ -2942,9 +2942,9 @@ bool LoadBlockIndex(bool fAllowNew)
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1441657188; // Mon, 07 Sep 2015 20:19:48 GMT
+        block.nTime    = 1457889292; // Mon, 07 Sep 2015 20:19:48 GMT
         block.nBits    = bnProofOfWorkLimit.GetCompact();
-        block.nNonce   = 751708;
+        block.nNonce   = 751707;
         if(fTestNet)
         {
             block.nNonce   = 0;
