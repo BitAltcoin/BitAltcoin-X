@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2015 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin developers
-// Copyright (c) 2015 The FlyCoin developers
+// Copyright (c) 2015 The BitAltcoin-X developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -1191,7 +1191,7 @@ static void ApproximateBestSubset(vector<pair<int64_t, pair<const CWalletTx*,uns
     }
 }
 
-// FlyCoin: total coins staked (non-spendable until maturity)
+// BitAltcoin-X: total coins staked (non-spendable until maturity)
 int64_t CWallet::GetStake() const
 {
     int64_t nTotal = 0;
@@ -2204,7 +2204,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             continue; // only count coins meeting min age requirement
 
         bool fKernelFound = false;
-		//FlyCoin now iterates each utxo inside of CheckStakeKernelHash()
+		//BitAltcoin-X now iterates each utxo inside of CheckStakeKernelHash()
 		uint256 hashProofOfStake = 0;
 		COutPoint prevoutStake = COutPoint(pcoin.first->GetHash(), pcoin.second);
 		unsigned int txNewTime = txNew.nTime;
@@ -2965,8 +2965,8 @@ set< set<CTxDestination> > CWallet::GetAddressGroupings()
     return ret;
 }
 
-// FlyCoin: check 'spent' consistency between wallet and txindex
-// FlyCoin: fix wallet spent state according to txindex
+// BitAltcoin-X: check 'spent' consistency between wallet and txindex
+// BitAltcoin-X: fix wallet spent state according to txindex
 void CWallet::FixSpentCoins(int& nMismatchFound, int64_t& nBalanceInQuestion, int& nOrphansFound, bool fCheckOnly)
 {
     nMismatchFound = 0;
@@ -3034,7 +3034,7 @@ void CWallet::FixSpentCoins(int& nMismatchFound, int64_t& nBalanceInQuestion, in
      }
 }
 
-// FlyCoin: disable transaction (only for coinstake)
+// BitAltcoin-X: disable transaction (only for coinstake)
 void CWallet::DisableTransaction(const CTransaction &tx)
 {
     if (!tx.IsCoinStake() || !IsFromMe(tx))
