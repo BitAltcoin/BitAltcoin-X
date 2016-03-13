@@ -1166,10 +1166,9 @@ void MapPort()
 // The first name is used as information source for addrman.
 // The second name should resolve to a list of seed addresses.
 static const char *strDNSSeed[][2] = {
-	{"fly.dnsalias.com", "fly.dnsalias.com"},
-	{"167.114.224.79", "167.114.224.79"},
-	{"167.114.224.82", "167.114.224.82"},
-	{"www.walletbootstraps.com", "www.walletbootstraps.com"},
+    {"xbanode.bitaltcoin.online", "xbanode-a.bitaltcoin.online"},
+    {"xbanode-b.bitaltcoin.online", "xbanode-c.bitaltcoin.online"},
+    {"xbanode-d.bitaltcoin.online", "bitaltcoin.online"},
 };
 
 void ThreadDNSAddressSeed(void* parg)
