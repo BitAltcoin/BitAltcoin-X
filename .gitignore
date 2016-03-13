@@ -1,9 +1,9 @@
 #################
 ## Build
 #################
-/FlyCoind
-/src/FlyCoind
-/FlyCoin-qt
+/bitaltcoin-xd
+/src/bitaltcoin-xd
+/BitAltcoin-qt
 /Makefile
 /qrc_Background.cpp
 /qrc_bitcoin.cpp
@@ -221,7 +221,7 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-flycoin-qt_plugin_import.cpp
+bitaltcoin-xd-qt_plugin_import.cpp
 *.Debug
 Makefile.Release
 *.qm
