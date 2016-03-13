@@ -1,8 +1,8 @@
-// Copyright (c) 2015 The FlyCoin developers
+// Copyright (c) 2015 The BitAltcoin-X developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef FlyCoin_KERNEL_H
-#define FlyCoin_KERNEL_H
+#ifndef BitAltcoin-X_KERNEL_H
+#define BitAltcoin-X_KERNEL_H
 
 #include "main.h"
 
@@ -40,4 +40,4 @@ bool CheckStakeModifierCheckpoints(int nHeight, unsigned int nStakeModifierCheck
 int64_t GetWeight(int64_t nIntervalBeginning, int64_t nIntervalEnd);
 int64_t GetWeight2(int64_t nIntervalBeginning, int64_t nIntervalEnd);
 
-#endif // FlyCoin_KERNEL_H
+#endif // BitAltcoin-X_KERNEL_H
