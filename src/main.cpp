@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2015 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin developers
-// Copyright (c) 2015 The FlyCoin developers
+// Copyright (c) 2015 The BitAltcoin-X developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -39,19 +39,19 @@ map<uint256, CBlockIndex*> mapBlockIndex;
 set<pair<COutPoint, unsigned int> > setStakeSeen;
 
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // "standard" scrypt target limit for proof of work, results with 0,000244140625 proof-of-work difficulty
-static CBigNum bnProofOfStakeLimit(~uint256(0) >> 24);
+static CBigNum bnProofOfStakeLimit(~uint256(0) >> 48);
 
 static CBigNum bnProofOfWorkLimitTestNet(~uint256(0) >> 16);
-static CBigNum bnProofOfStakeLimitTestNet(~uint256(0) >> 30);
+static CBigNum bnProofOfStakeLimitTestNet(~uint256(0) >> 60);
 
 unsigned int nTargetSpacing = 2 * 60; // 2 minute
 unsigned int nTargetSpacing2 = 5 * 60; // 5 minute
-unsigned int nStakeMinAge = 7 * 24 * 60 * 60; // 7 days
-unsigned int nStakeMaxAge = 28 * 24 * 60 * 60; // 28 days
+unsigned int nStakeMinAge = 1 * 24 * 60 * 60; // 1 days
+unsigned int nStakeMaxAge = 365 * 24 * 60 * 60; // 365 days
 unsigned int nModifierInterval = 17150; // time to elapse before new modifier is computed
 unsigned int nStakeTargetSpacing = nTargetSpacing;
-int64_t devCoin = 0 * COIN;
-int nCoinbaseMaturity = 50;
+int64_t devCoin = 2 * COIN;
+int nCoinbaseMaturity = 10;
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
 uint256 nBestChainTrust = 0;
@@ -73,7 +73,7 @@ map<unsigned int, unsigned int> mapHashedBlocks; // for liteStake
 // Constant stuff for coinbase transactions we create:
 CScript COINBASE_FLAGS;
 
-const string strMessageMagic = "FlyCoin Signed Message:\n";
+const string strMessageMagic = "BitAltcoin-X Signed Message:\n";
 
 // Settings
 int64_t nTransactionFee = MIN_TX_FEE_V2;
@@ -137,7 +137,7 @@ void SyncWithWallets(const CTransaction& tx, const CBlock* pblock, bool fUpdate,
 {
     if (!fConnect)
     {
-        // FlyCoin: wallets need to refund inputs when disconnecting coinstake
+        // BitAltcoin-X: wallets need to refund inputs when disconnecting coinstake
         if (tx.IsCoinStake())
         {
             BOOST_FOREACH(CWallet* pwallet, setpwalletRegistered)
@@ -513,11 +513,11 @@ bool CTransaction::CheckTransaction() const
                 return DoS(10, error("CTransaction::CheckTransaction() : prevout is null"));
     }
 	
-	// presstab - FlyCoin requires an additional fee
+	// presstab - BitAltcoin-X requires an additional fee
 	if(nTime > FORK_TIME_2 && nTime < FORK_TIME_3 && !IsAdditionalFeeIncluded())
 		return DoS(100, error("CTransaction::CheckTransaction() : additional fee is not included (V1)"));
 
-	if(nTime > 1450469710 && !IsAdditionalFeeIncludedV2())
+	if(nTime > 1457894130 && !IsAdditionalFeeIncludedV2())
 		return DoS(100, error("CTransaction::CheckTransaction() : additional fee is not included (V2)"));
 	
     return true;
@@ -680,7 +680,7 @@ bool CTxMemPool::accept(CTxDB& txdb, CTransaction &tx, bool fCheckInputs,
     if (tx.IsCoinBase())
         return tx.DoS(100, error("CTxMemPool::accept() : coinbase as individual tx"));
 
-    // FlyCoin: coinstake is also only valid in a block, not as a loose transaction
+    // BitAltcoin-X: coinstake is also only valid in a block, not as a loose transaction
     if (tx.IsCoinStake())
         return tx.DoS(100, error("CTxMemPool::accept() : coinstake as individual tx"));
 
@@ -1291,9 +1291,9 @@ unsigned int ComputeMaxBits(CBigNum bnTargetLimit, unsigned int nBase, int64_t n
     bnResult *= 2;
     while (nTime > 0 && bnResult < bnTargetLimit)
     {
-        // Maximum 200% adjustment per day...
+        // Maximum 2000% adjustment per day...
         bnResult *= 2;
-        nTime -= 24 * 60 * 60;
+        nTime -= 10 * 24 * 60 * 60;
     }
     if (bnResult > bnTargetLimit)
         bnResult = bnTargetLimit;
@@ -1319,7 +1319,7 @@ unsigned int ComputeMinStake(unsigned int nBase, int64_t nTime, unsigned int nBl
 }
 
 
-// FlyCoin: find last block index up to pindex
+// BitAltcoin-X: find last block index up to pindex
 const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfStake)
 {
     while (pindex && pindex->pprev && (pindex->IsProofOfStake() != fProofOfStake))
@@ -1633,7 +1633,7 @@ bool CTransaction::ConnectInputs(CTxDB& txdb, MapPrevTx inputs, map<uint256, CTx
                     if (pindex->nBlockPos == txindex.pos.nBlockPos && pindex->nFile == txindex.pos.nFile)
                         return error("ConnectInputs() : tried to spend %s at depth %d", txPrev.IsCoinBase() ? "coinbase" : "coinstake", pindexBlock->nHeight - pindex->nHeight);
 
-            // FlyCoin: check transaction timestamp
+            // BitAltcoin-X: check transaction timestamp
             if (txPrev.nTime > nTime)
                 return DoS(100, error("ConnectInputs() : transaction timestamp earlier than input transaction"));
 
@@ -1771,7 +1771,7 @@ bool CBlock::DisconnectBlock(CTxDB& txdb, CBlockIndex* pindex)
             return error("DisconnectBlock() : WriteBlockIndex failed");
     }
 
-    // FlyCoin: clean up wallet after disconnecting coinstake
+    // BitAltcoin-X: clean up wallet after disconnecting coinstake
     BOOST_FOREACH(CTransaction& tx, vtx)
         SyncWithWallets(tx, this, false, false);
 
@@ -1887,7 +1887,7 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
             }
         }
 
-        // FlyCoin: track money supply and mint amount info
+        // BitAltcoin-X: track money supply and mint amount info
         pindex->nMint = nValueOut - nValueIn + nFees;
         pindex->nMoneySupply = (pindex->pprev? pindex->pprev->nMoneySupply : 0) + nValueOut - nValueIn - XBurned;
         if (!txdb.WriteBlockIndex(CDiskBlockIndex(pindex)))
@@ -1935,7 +1935,7 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
 	
     if (IsProofOfStake())
     {
-        // FlyCoin: coin stake tx earns reward instead of paying fee
+        // BitAltcoin-X: coin stake tx earns reward instead of paying fee
         uint64_t nCoinAge;
         if (!vtx[1].GetCoinAge(txdb, nCoinAge))
             return error("ConnectBlock() : %s unable to get coin age for coinstake", vtx[1].GetHash().ToString().substr(0,10).c_str());
@@ -1972,7 +1972,7 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
         }
     }
 
-    // FlyCoin: track money supply and mint amount info
+    // BitAltcoin-X: track money supply and mint amount info
     pindex->nMint = nValueOut - nValueIn + nFees;
     pindex->nMoneySupply = (pindex->pprev? pindex->pprev->nMoneySupply : 0) + nValueOut - nValueIn - nBurned;
 
@@ -2253,7 +2253,7 @@ bool CBlock::SetBestChain(CTxDB& txdb, CBlockIndex* pindexNew)
     return true;
 }
 
-// FlyCoin: total coin age spent in transaction, in the unit of coin-days.
+// BitAltcoin-X: total coin age spent in transaction, in the unit of coin-days.
 // Only those coins meeting minimum age requirement counts. As those
 // transactions not in main chain are not currently indexed so we
 // might not find out about their coin age. Older transactions are 
@@ -2302,7 +2302,7 @@ bool CTransaction::GetCoinAge(CTxDB& txdb, uint64_t& nCoinAge) const
     return true;
 }
 
-// FlyCoin: total coin age spent in block, in the unit of coin-days.
+// BitAltcoin-X: total coin age spent in block, in the unit of coin-days.
 bool CBlock::GetCoinAge(uint64_t& nCoinAge) const
 {
     nCoinAge = 0;
@@ -2343,17 +2343,17 @@ bool CBlock::AddToBlockIndex(unsigned int nFile, unsigned int nBlockPos, const u
         pindexNew->nHeight = pindexNew->pprev->nHeight + 1;
     }
 
-    // FlyCoin: compute chain trust score
+    // BitAltcoin-X: compute chain trust score
     pindexNew->nChainTrust = (pindexNew->pprev ? pindexNew->pprev->nChainTrust : 0) + pindexNew->GetBlockTrust();
 
-    // FlyCoin: compute stake entropy bit for stake modifier
+    // BitAltcoin-X: compute stake entropy bit for stake modifier
     if (!pindexNew->SetStakeEntropyBit(GetStakeEntropyBit()))
         return error("AddToBlockIndex() : SetStakeEntropyBit() failed");
 
-    // FlyCoin: record proof-of-stake hash value
+    // BitAltcoin-X: record proof-of-stake hash value
     pindexNew->hashProofOfStake = hashProofOfStake;
 
-    // FlyCoin: compute stake modifier
+    // BitAltcoin-X: compute stake modifier
     uint64_t nStakeModifier = 0;
     bool fGeneratedStakeModifier = false;
     if (!ComputeNextStakeModifier(pindexNew->pprev, nStakeModifier, fGeneratedStakeModifier))
@@ -2453,7 +2453,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
         if (!tx.CheckTransaction())
             return DoS(tx.nDoS, error("CheckBlock() : CheckTransaction failed"));
 
-        // FlyCoin: check transaction timestamp
+        // BitAltcoin-X: check transaction timestamp
         if (GetBlockTime() < (int64_t)tx.nTime)
             return DoS(50, error("CheckBlock() : block timestamp earlier than transaction timestamp"));
     }
@@ -2537,7 +2537,7 @@ bool CBlock::AcceptBlock()
                 if (nBestHeight > (pnode->nStartingHeight != -1 ? pnode->nStartingHeight - 2000 : nBlockEstimate))
                     pnode->PushInventory(CInv(MSG_BLOCK, hash));
         }
-        // FlyCoin: check pending sync-checkpoint
+        // BitAltcoin-X: check pending sync-checkpoint
         Checkpoints::AcceptPendingSyncCheckpoint();
         return true;
     }
@@ -2600,7 +2600,7 @@ bool CBlock::AcceptBlock()
                 pnode->PushInventory(CInv(MSG_BLOCK, hash));
     }
 
-    // FlyCoin: check pending sync-checkpoint
+    // BitAltcoin-X: check pending sync-checkpoint
     Checkpoints::AcceptPendingSyncCheckpoint();
 
     return true;
@@ -2638,7 +2638,7 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
     if (mapOrphanBlocks.count(hash))
         return error("ProcessBlock() : already have block (orphan) %s", hash.ToString().substr(0,20).c_str());
 
-    // FlyCoin: check proof-of-stake
+    // BitAltcoin-X: check proof-of-stake
     // Limited duplicity on stake: prevents block flood attack
     // Duplicate stake allowed only when there is orphan child block
     if (pblock->IsProofOfStake() && setStakeSeen.count(pblock->GetProofOfStake()) && !mapOrphanBlocksByPrev.count(hash) && !Checkpoints::WantedByPendingSyncCheckpoint(hash))
@@ -2670,7 +2670,7 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
         }
     }
 
-    // FlyCoin: ask for pending sync-checkpoint if any
+    // BitAltcoin-X: ask for pending sync-checkpoint if any
     if (!IsInitialBlockDownload())
         Checkpoints::AskForPendingSyncCheckpoint(pfrom);
 
@@ -2679,7 +2679,7 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
     {
         printf("ProcessBlock: ORPHAN BLOCK, prev=%s\n", pblock->hashPrevBlock.ToString().substr(0,20).c_str());
         CBlock* pblock2 = new CBlock(*pblock);
-        // FlyCoin: check proof-of-stake
+        // BitAltcoin-X: check proof-of-stake
         if (pblock2->IsProofOfStake())
         {
             // Limited duplicity on stake: prevents block flood attack
@@ -2696,7 +2696,7 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
         if (pfrom)
         {
             pfrom->PushGetBlocks(pindexBest, GetOrphanRoot(pblock2));
-            // FlyCoin: getblocks may not obtain the ancestor block rejected
+            // BitAltcoin-X: getblocks may not obtain the ancestor block rejected
             // earlier by duplicate-stake check so we ask for it again directly
             if (!IsInitialBlockDownload())
                 pfrom->AskFor(CInv(MSG_BLOCK, WantedByOrphan(pblock2)));
@@ -2739,14 +2739,14 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
 		if (!pwalletMain->MultiSend() )
 			printf("ERROR While trying to use MultiSend");
 
-    // FlyCoin: if responsible for sync-checkpoint send it
+    // BitAltcoin-X: if responsible for sync-checkpoint send it
     if (pfrom && !CSyncCheckpoint::strMasterPrivKey.empty())
         Checkpoints::SendSyncCheckpoint(Checkpoints::AutoSelectSyncCheckpoint());
 
     return true;
 }
 
-// FlyCoin: attempt to generate suitable proof-of-stake
+// BitAltcoin-X: attempt to generate suitable proof-of-stake
 bool CBlock::SignBlock(CWallet& wallet, int64_t nFees)
 {
     // if we are trying to sign
@@ -2834,7 +2834,7 @@ bool CheckDiskSpace(uint64_t nAdditionalBytes)
         string strMessage = _("Warning: Disk space is low!");
         strMiscWarning = strMessage;
         printf("*** %s\n", strMessage.c_str());
-        uiInterface.ThreadSafeMessageBox(strMessage, "FlyCoin", CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
+        uiInterface.ThreadSafeMessageBox(strMessage, "BitAltcoin-X", CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
         StartShutdown();
         return false;
     }
@@ -2930,7 +2930,7 @@ bool LoadBlockIndex(bool fAllowNew)
         if (!fAllowNew)
             return true;
 
-        const char* pszTimestamp = "FlyCoin, flying high!";
+        const char* pszTimestamp = "BitAltcoin-X, flying high!";
         CTransaction txNew;
         txNew.nTime = 1441657188;
         txNew.vin.resize(1);
@@ -2985,7 +2985,7 @@ bool LoadBlockIndex(bool fAllowNew)
         if (!block.AddToBlockIndex(nFile, nBlockPos, 0))
             return error("LoadBlockIndex() : genesis block not accepted");
 
-        // FlyCoin: initialize synchronized checkpoint
+        // BitAltcoin-X: initialize synchronized checkpoint
         if (!Checkpoints::WriteSyncCheckpoint((!fTestNet ? hashGenesisBlock : hashGenesisBlockTestNet)))
             return error("LoadBlockIndex() : failed to init sync checkpoint");
     }
