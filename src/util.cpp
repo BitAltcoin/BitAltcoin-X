@@ -1073,7 +1073,7 @@ const boost::filesystem::path &GetDataDir(bool fNetSpecific)
 
 boost::filesystem::path GetConfigFile()
 {
-    boost::filesystem::path pathConfigFile(GetArg("-conf", "BitAltcoin-X.conf"));
+    boost::filesystem::path pathConfigFile(GetArg("-conf", "bitaltcoin-x.conf"));
     if (!pathConfigFile.is_complete()) pathConfigFile = GetDataDir(false) / pathConfigFile;
     return pathConfigFile;
 }
