@@ -152,10 +152,10 @@ bool AppInit(int argc, char* argv[])
             // First part of help message is specific to bitcoind / RPC client
             std::string strUsage = _("BitAltcoin-X version") + " " + FormatFullVersion() + "\n\n" +
                 _("Usage:") + "\n" +
-                  "  BitAltcoin-Xd [options]                     " + "\n" +
-                  "  BitAltcoin-Xd [options] <command> [params]  " + _("Send command to -server or BitAltcoin-Xd") + "\n" +
-                  "  BitAltcoin-Xd [options] help                " + _("List commands") + "\n" +
-                  "  BitAltcoin-Xd [options] help <command>      " + _("Get help for a command") + "\n";
+                  "  bitaltcoin-xd [options]                     " + "\n" +
+                  "  bitaltcoin-xd [options] <command> [params]  " + _("Send command to -server or bitaltcoin-xd") + "\n" +
+                  "  bitaltcoin-xd [options] help                " + _("List commands") + "\n" +
+                  "  bitaltcoin-xd [options] help <command>      " + _("Get help for a command") + "\n";
 
             strUsage += "\n" + HelpMessage();
 
@@ -235,7 +235,7 @@ std::string HelpMessage()
         "  -?                     " + _("This help message") + "\n" +
         "  -exchangewallet        " + _("Wallet uses non-standard addresses (exchanges only)") + "\n" +
         "  -conf=<file>           " + _("Specify configuration file (default: BitAltcoin-X.conf)") + "\n" +
-        "  -pid=<file>            " + _("Specify pid file (default: BitAltcoin-Xd.pid)") + "\n" +
+        "  -pid=<file>            " + _("Specify pid file (default: bitaltcoin-xd.pid)") + "\n" +
         "  -datadir=<dir>         " + _("Specify data directory") + "\n" +
         "  -wallet=<dir>          " + _("Specify wallet file (within data directory)") + "\n" +
         "  -dbcache=<n>           " + _("Set database cache size in megabytes (default: 25)") + "\n" +
@@ -245,7 +245,7 @@ std::string HelpMessage()
         "  -socks=<n>             " + _("Select the version of socks proxy to use (4-5, default: 5)") + "\n" +
         "  -tor=<ip:port>         " + _("Use proxy to reach tor hidden services (default: same as -proxy)") + "\n"
         "  -dns                   " + _("Allow DNS lookups for -addnode, -seednode and -connect") + "\n" +
-        "  -port=<port>           " + _("Listen for connections on <port> (default: 41568 or testnet: 22568)") + "\n" +
+        "  -port=<port>           " + _("Listen for connections on <port> (default: 3777 or testnet: 13777)") + "\n" +
         "  -maxconnections=<n>    " + _("Maintain at most <n> connections to peers (default: 125)") + "\n" +
         "  -addnode=<ip>          " + _("Add a node to connect to and attempt to keep the connection open") + "\n" +
         "  -connect=<ip>          " + _("Connect only to the specified node(s)") + "\n" +
